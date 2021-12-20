@@ -1,0 +1,12 @@
+<div style="text-align:center">
+	<div [innerHtml]='msg' *ngIf="msg" style="color: red;"></div>
+	<div><img [src]="url" *ngIf="url" width="500"></div>
+	<form [formGroup]="form" (ngSubmit)="submit()">
+		<div class="form-group">
+			<input type="file" (change)="upload($event)">
+		</div>
+		<div class="form-group">
+			<button class="btn btn-danger">Upload</button>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,4 @@
+github.com/gnyiri/web_image_poc/api v0.0.0-20211212131905-825bf3485678 h1:CKMUlrF80Tduz/jGHvczCR3Eft7s+oQwomCWbvrgBCE=
+github.com/gnyiri/web_image_poc/api v0.0.0-20211212131905-825bf3485678/go.mod h1:pB7fJudtETlD+jpY2y+QDGWOejfVZGXMV5G5UE5F/MU=
+github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
+github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=

@@ -1,0 +1,27 @@
+<div *ngIf="imageMessage$ | async as imageMessage else spinner">
+    <div class="row">
+        <div class="column">
+            <div *ngFor="let image of imageColumn1">
+                <app-image-detail [image]="image" (click)="onImageClick(image.name)">
+                </app-image-detail>
+            </div>
+        </div>
+        <div class="column">
+            <div *ngFor="let image of imageColumn2" >
+                <app-image-detail [image]="image" (click)="onImageClick(image.name)">
+                </app-image-detail>
+            </div>
+        </div>
+        <div class="column">
+            <div *ngFor="let image of imageColumn3">
+                <app-image-detail [image]="image" (click)="onImageClick(image.name)">
+                </app-image-detail>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #spinner>
+    <div class="container">
+        <div class="spinner-border"></div>
+    </div>
+</ng-template>

@@ -1,0 +1,21 @@
+<div *ngIf="imagePath">
+    <div class="container">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group mr-2" role="group" aria-label="1st group">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Operation
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <button class="dropdown-item" type="button" (click)="onThreshold()">Threshold</button>
+                        <button class="dropdown-item" type="button" (click)="onSmooth()">Smooth</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <img src="{{imagePath}}" alt="{{imagePath}}">
+        </div>
+    </div>
+</div>
