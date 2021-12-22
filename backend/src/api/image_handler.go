@@ -9,8 +9,11 @@ import (
 	"os"
 	"path"
 
+	"github.com/gnyiri/web_image_poc/algorithms"
 	"github.com/gnyiri/web_image_poc/config"
+	"github.com/gnyiri/web_image_poc/image_io"
 	"github.com/gnyiri/web_image_poc/image_repository"
+	"github.com/gorilla/mux"
 )
 
 type ImageHandler struct {
@@ -23,9 +26,9 @@ func NewImageHandler(c *config.Config, i *image_repository.ImageRepository) *Ima
 }
 
 func (i *ImageHandler) ImagesHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	var response ImageDTO
+	var response ImagesDTO
 
 	images, err := i.ir.GetImages()
 
@@ -85,4 +88,75 @@ func (i *ImageHandler) ImageUploadHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func (i *ImageHandler) DeleteImageHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Anyad")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
+	vars := mux.Vars(r)
+	imageName := vars["image"]
+
+	fmt.Printf("Delete image %s", imageName)
+
+	err := i.ir.DeleteImage(path.Join(i.cf.WWWRoot, i.cf.ImageRepositoryPath, imageName))
+
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (i *ImageHandler) ImageThresholdHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	vars := mux.Vars(r)
+	imageName := vars["image"]
+	thresholdValue := vars["threshold"]
+	//var threshold algorithms.Threshold {}
+	fmt.Printf("Image: %s, threshold: %s", imageName, thresholdValue)
+
+	var response ImageDTO
+
+	imageData, err := image_io.LoadRGBAImage(path.Join(i.cf.WWWRoot, i.cf.ImageRepositoryPath, imageName))
+
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	threshold := algorithms.Threshold{imageData, 127}
+
+	outputImageData := threshold.Execute()
+	outputImageName := i.ir.GenerateImageName() + ".png"
+	outputImagePath := path.Join(path.Join(i.cf.WWWRoot, i.cf.ImageRepositoryPath, outputImageName))
+
+	err = image_io.SaveGrayImage(outputImagePath, outputImageData)
+
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	response.Image.Name = outputImageName
+	response.Image.Path = outputImagePath
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.Write(jsonResponse)
 }

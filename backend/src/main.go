@@ -9,6 +9,7 @@ import (
 	"github.com/gnyiri/web_image_poc/config"
 	"github.com/gnyiri/web_image_poc/image_repository"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -20,8 +21,18 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/upload", ih.ImageUploadHandler)
-	r.HandleFunc("/images", ih.ImagesHandler)
-	r.Use(mux.CORSMethodMiddleware(r))
+	r.HandleFunc("/images", ih.ImagesHandler).Methods("GET")
+	r.HandleFunc("/threshold/{image}/{threshold}", ih.ImageThresholdHandler).Methods("GET")
+	r.HandleFunc("/images/{image}", ih.DeleteImageHandler).Methods("DELETE")
+	// r.Use(mux.CORSMethodMiddleware(r))
 
-	http.ListenAndServe(fmt.Sprintf(":%d", cf.ServerPort), r)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+	})
+
+	handler := c.Handler(r)
+
+	http.ListenAndServe(fmt.Sprintf(":%d", cf.ServerPort), handler)
 }

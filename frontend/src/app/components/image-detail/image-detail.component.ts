@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Image } from 'src/app/interfaces/image';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-image-detail',
@@ -10,12 +11,18 @@ import { Image } from 'src/app/interfaces/image';
 export class ImageDetailComponent implements OnInit {
   @Input() image: Image | undefined;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private imageService: ImageService) { }
 
   ngOnInit(): void {
   }
 
-  onImageSelect(imageName: string) {
-    this.router.navigate(['image-operation', { imagePath: imageName }]);
+  onImageSelect(pImagePath: string, pImageName: string): void {
+    this.router.navigate(['image-operation', { imagePath: pImagePath, imageName: pImageName }]);
+  }
+
+  onImageDelete(pImagePath: string, pImageName: string): void {
+    this.imageService.deleteImage(pImageName).subscribe(result => {
+      this.imageService.imagesChanged.next(true);
+    });
   }
 }

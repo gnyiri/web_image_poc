@@ -5,6 +5,10 @@ export interface Image {
     full_path: string;
 }
 
-export interface ImageMessage {
+export interface SingleImageResponse {
+    image: Image;
+}
+
+export interface MultiImageResponse {
     images: Image[];
 }

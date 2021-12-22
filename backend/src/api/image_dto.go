@@ -5,5 +5,9 @@ import (
 )
 
 type ImageDTO struct {
+	Image image_repository.ImageEntity `json:"image"`
+}
+
+type ImagesDTO struct {
 	Images []image_repository.ImageEntity `json:"images"`
 }

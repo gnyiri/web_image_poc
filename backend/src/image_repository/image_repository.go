@@ -1,8 +1,11 @@
 package image_repository
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
+	"os"
 	"path"
 
 	"github.com/gnyiri/web_image_poc/config"
@@ -37,4 +40,12 @@ func (i *ImageRepository) GetImages() ([]ImageEntity, error) {
 	}
 
 	return images, nil
+}
+
+func (i *ImageRepository) GenerateImageName() string {
+	return fmt.Sprintf("%d", rand.Int())
+}
+
+func (i *ImageRepository) DeleteImage(imagePath string) error {
+	return os.Remove(imagePath)
 }
