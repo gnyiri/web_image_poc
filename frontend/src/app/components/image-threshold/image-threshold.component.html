@@ -1,0 +1,9 @@
+<div *ngIf="iImage">
+    <div class="container">
+        <img src="{{iImage.full_path}}" alt="{{iImage.name}}">
+        <p>{{iImage.name}}</p>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-danger" (click)="onThreshold()">Start</button>
+    </div>
+</div>

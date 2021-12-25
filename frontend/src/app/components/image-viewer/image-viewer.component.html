@@ -1,0 +1,6 @@
+<div *ngIf="image">
+    <div class="container">
+        <img src="{{image.full_path}}" alt="{{image.full_path}}" (click)="onClick()">
+        <p>{{image.name}}</p>
+    </div>
+</div>

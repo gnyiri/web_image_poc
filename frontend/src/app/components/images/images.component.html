@@ -1,5 +1,8 @@
 <div *ngIf="imageMessage$ | async as imageMessage else spinner">
     <div class="row">
+        <p>Click on image to select</p>
+    </div>
+    <div class="row">
         <div class="column">
             <div *ngFor="let image of imageColumn1">
                 <app-image-detail [image]="image" (click)="onImageClick(image.name)">
@@ -7,7 +10,7 @@
             </div>
         </div>
         <div class="column">
-            <div *ngFor="let image of imageColumn2" >
+            <div *ngFor="let image of imageColumn2">
                 <app-image-detail [image]="image" (click)="onImageClick(image.name)">
                 </app-image-detail>
             </div>

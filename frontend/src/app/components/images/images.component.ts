@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ImageService } from 'src/app/services/image.service';
-import { SingleImageResponse, MultiImageResponse, Image } from 'src/app/interfaces/image';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { Image, MultiImageResponse } from 'src/app/interfaces/image';
+import { ImageService } from 'src/app/services/image.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-images',
@@ -12,11 +12,12 @@ import { environment } from 'src/environments/environment';
 })
 export class ImagesComponent implements OnInit {
   imageMessage$: Observable<MultiImageResponse> | undefined;
+  images: Image[] | undefined = undefined;
   imageColumn1: Image[] = [];
   imageColumn2: Image[] = [];
   imageColumn3: Image[] = [];
 
-  constructor(private imageService: ImageService) { }
+  constructor(private imageService: ImageService, private stateService: StateService) { }
 
   ngOnInit(): void {
     this.getImages();
@@ -28,29 +29,25 @@ export class ImagesComponent implements OnInit {
 
   getImages(): void {
     this.imageMessage$ = this.imageService.getImages().pipe(map(values => {
-      const images: Image[] = values.images;
+      this.images = values.images;
 
       let tempImagesColumn1 = [];
       let tempImagesColumn2 = [];
       let tempImagesColumn3 = [];
 
-      if (images) {
-        images.forEach(image => {
-          image.full_path = environment.imageRepositoryUrl + '/' + image.name;
-        });
-
-        images.sort((a, b) => {
+      if (this.images) {
+        this.images.sort((a, b) => {
           return a.creation_time < b.creation_time ? 1 : -1;
         });
 
-        for (let i = 0; i < images.length; i += 3) {
-          tempImagesColumn1[i] = images[i];
+        for (let i = 0; i < this.images.length; i += 3) {
+          tempImagesColumn1[i] = this.images[i];
 
-          if (i < images.length - 1) {
-            tempImagesColumn2[i] = images[i + 1];
+          if (i < this.images.length - 1) {
+            tempImagesColumn2[i] = this.images[i + 1];
           }
-          if (i < images.length - 2) {
-            tempImagesColumn3[i] = images[i + 2];
+          if (i < this.images.length - 2) {
+            tempImagesColumn3[i] = this.images[i + 2];
           }
         }
       }
@@ -64,6 +61,7 @@ export class ImagesComponent implements OnInit {
   }
 
   onImageClick(imageName: string): void {
-    console.log(imageName);
+    const image = this.images?.find((image) => image.name == imageName);
+    this.stateService.selectedImage = image;
   }
 }

@@ -9,7 +9,8 @@ import { MainComponent } from './components/main/main.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImagesComponent } from './components/images/images.component';
 import { ImageDetailComponent } from './components/image-detail/image-detail.component';
-import { ImageOperationComponent } from './components/image-operation/image-operation.component';
+import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
+import { ImageThresholdComponent } from './components/image-threshold/image-threshold.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ImageOperationComponent } from './components/image-operation/image-oper
     MainComponent,
     ImagesComponent,
     ImageDetailComponent,
-    ImageOperationComponent
+    ImageViewerComponent,
+    ImageThresholdComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,4 @@
 <div *ngIf="image" align="center">
-    <img src="{{image.full_path}}" alt="{{image.full_path}}" style="width:100%">
-    <button type="button" class="btn btn-primary" (click)="onImageSelect(image.full_path, image.name)">Select</button>
-    <button type="button" class="btn btn-primary" (click)="onImageDelete(image.full_path, image.name)">Delete</button>
+    <img src="{{image.full_path}}" alt="{{image.full_path}}" style="width:100%" (click)="onImageSelect(image.full_path, image.name)">
+    <p>{{image.name}}</p>
 </div>
