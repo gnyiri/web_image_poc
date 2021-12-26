@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Image, MultiImageResponse } from 'src/app/interfaces/image';
 import { ImageService } from 'src/app/services/image.service';
@@ -13,11 +14,15 @@ import { StateService } from 'src/app/services/state.service';
 export class ImagesComponent implements OnInit {
   imageMessage$: Observable<MultiImageResponse> | undefined;
   images: Image[] | undefined = undefined;
+  imagesSubject = new Subject();
   imageColumn1: Image[] = [];
   imageColumn2: Image[] = [];
   imageColumn3: Image[] = [];
 
-  constructor(private imageService: ImageService, private stateService: StateService) { }
+  constructor(
+    private router: Router,
+    private imageService: ImageService, 
+    private stateService: StateService) { }
 
   ngOnInit(): void {
     this.getImages();
@@ -27,13 +32,22 @@ export class ImagesComponent implements OnInit {
     });
   }
 
+  selectDefaultImage(): void {
+    console.log(this.stateService.selectedImage);
+    console.log(this.images);
+
+    if (this.images && this.images.length > 0 && this.stateService.selectedImage === undefined) {
+      this.stateService.selectedImage = this.images[0];
+    }
+  }
+
   getImages(): void {
     this.imageMessage$ = this.imageService.getImages().pipe(map(values => {
       this.images = values.images;
 
-      let tempImagesColumn1 = [];
-      let tempImagesColumn2 = [];
-      let tempImagesColumn3 = [];
+      const tempImagesColumn1 = [];
+      const tempImagesColumn2 = [];
+      const tempImagesColumn3 = [];
 
       if (this.images) {
         this.images.sort((a, b) => {
@@ -56,12 +70,20 @@ export class ImagesComponent implements OnInit {
       this.imageColumn2 = tempImagesColumn2;
       this.imageColumn3 = tempImagesColumn3;
 
+      this.selectDefaultImage();
+
       return values;
     }));
   }
 
-  onImageClick(imageName: string): void {
-    const image = this.images?.find((image) => image.name == imageName);
+  onImageClick(pImage: Image): void {
+    const image = this.images?.find((result) => result.name === pImage.name);
     this.stateService.selectedImage = image;
+  }
+
+  onImageDblClick(pImage: Image): void {
+    const image = this.images?.find((result) => result.name === pImage.name);
+    this.stateService.selectedImage = image;
+    this.router.navigate(['image-viewer', { imagePath: pImage.path, imageName: pImage.name }]);
   }
 }

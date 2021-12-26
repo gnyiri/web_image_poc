@@ -6,15 +6,15 @@ import { Image } from '../interfaces/image';
   providedIn: 'root'
 })
 export class StateService {
-  private readonly _selectedImage = new BehaviorSubject<Image | undefined>(undefined);
+  readonly selectedImageSubject = new BehaviorSubject<Image | undefined>(undefined);
 
   constructor() { }
 
   get selectedImage(): Image | undefined {
-    return this._selectedImage.getValue();
+    return this.selectedImageSubject.getValue();
   }
 
   set selectedImage(val: Image | undefined) {
-    this._selectedImage.next(val);
+    this.selectedImageSubject.next(val);
   }
 }

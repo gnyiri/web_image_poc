@@ -19,7 +19,7 @@ export class ImageViewerComponent implements OnInit {
     console.log('Selected image: ' + this.stateService.selectedImage);
   }
 
-  onClick() {
+  onClick(): void {
     this.router.navigate(['images', { }]);
   }
 }

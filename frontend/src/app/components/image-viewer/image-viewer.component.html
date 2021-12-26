@@ -1,4 +1,5 @@
-<div *ngIf="image">
+<div *ngIf="image" align="center">
+    <h4 class="text-center">Click image to return to repository</h4>
     <div class="container">
         <img src="{{image.full_path}}" alt="{{image.full_path}}" (click)="onClick()">
         <p>{{image.name}}</p>

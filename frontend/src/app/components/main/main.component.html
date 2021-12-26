@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand navbar-dark bg-primary">
   <a class="navbar-brand" href="#">Web Image Processing</a>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -12,6 +11,9 @@
           <a class="dropdown-item" [routerLink]="['image-upload']">
             Upload Image
           </a>
+          <a class="dropdown-item" [routerLink]="['image-delete']">
+            Delete Image
+          </a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -22,6 +24,17 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" [routerLink]="['image-threshold']">
             Threshold
+          </a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Analytics
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" [routerLink]="['histogram']">
+            Histogram
           </a>
         </div>
       </li>
@@ -40,5 +53,5 @@
 </nav>
 <hr />
 <div class="container">
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

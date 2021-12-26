@@ -1,4 +1,9 @@
 <div *ngIf="image" align="center">
-    <img src="{{image.full_path}}" alt="{{image.full_path}}" style="width:100%" (click)="onImageSelect(image.full_path, image.name)">
+    <div *ngIf="selected else nonSelected">
+        <img src="{{image.full_path}}" alt="{{image.full_path}}" style="width:100%" class="selected">
+    </div>
+    <ng-template #nonSelected>
+        <img src="{{image.full_path}}" alt="{{image.full_path}}" style="width:100%">
+    </ng-template>
     <p>{{image.name}}</p>
 </div>

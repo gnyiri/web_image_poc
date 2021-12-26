@@ -11,15 +11,26 @@ import { StateService } from 'src/app/services/state.service';
 })
 export class ImageDetailComponent implements OnInit {
   @Input() image: Image | undefined;
+  selected = false;
 
   constructor(private router: Router, private imageService: ImageService, private stateService: StateService) { }
 
   ngOnInit(): void {
-  }
+    if (this.image) {
+      if (this.image.full_path === this.stateService.selectedImage?.full_path) {
+        this.selected = true;
+      }
+    }
 
-  onImageSelect(pImagePath: string, pImageName: string): void {
-    this.stateService.selectedImage = this.image;
-    this.router.navigate(['image-viewer', { imagePath: pImagePath, imageName: pImageName }]);
+    this.stateService.selectedImageSubject.subscribe(image => {
+      if (image && this.image) {
+        if (image.full_path === this.image.full_path) {
+          this.selected = true;
+        } else {
+          this.selected = false;
+        }
+      }
+    });
   }
 
   onImageDelete(pImagePath: string, pImageName: string): void {

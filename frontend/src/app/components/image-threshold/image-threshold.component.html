@@ -1,9 +1,26 @@
-<div *ngIf="iImage">
-    <div class="container">
-        <img src="{{iImage.full_path}}" alt="{{iImage.name}}">
-        <p>{{iImage.name}}</p>
+<div class="container" align="center">
+    <h4 class="text-center">Select threshold and start segmentation</h4>
+    <div class="slidecontainer">
+        <input type="range" min="0" max="255" value="127" class="slider" id="myRange" [formControl]="thresholdControl">
     </div>
-    <div class="form-group">
-        <button class="btn btn-danger" (click)="onThreshold()">Start</button>
+    <div class="container">
+        <button class="btn btn-danger" (click)="onThreshold()">Start thresholding</button>
+    </div>
+
+    <div *ngIf="iImage" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+        <div>
+            <img src="{{iImage.full_path}}" alt="{{iImage.name}}">
+            <p>{{iImage.name}}</p>
+        </div>
+        <div *ngIf="oImage; else elseBlock">
+            <img src="{{oImage.full_path}}" alt="{{oImage.name}}">
+            <p>{{oImage.name}}</p>
+        </div>
+        <ng-template #elseBlock>
+            <div>
+                <img src="{{iImage.full_path}}" alt="{{iImage.name}}">
+                <p>{{iImage.name}}</p>
+            </div>
+        </ng-template>
     </div>
 </div>

@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"path"
+	"strconv"
 
 	"github.com/gnyiri/web_image_poc/algorithms"
 	"github.com/gnyiri/web_image_poc/config"
@@ -67,30 +67,23 @@ func (i *ImageHandler) ImageUploadHandler(w http.ResponseWriter, r *http.Request
 	fmt.Printf("File Size: %+v\n", handler.Size)
 	fmt.Printf("MIME Header: %+v\n", handler.Header)
 
-	tempFile, err := ioutil.TempFile(path.Join(i.cf.WWWRoot, i.cf.ImageRepositoryPath), "upload-*.png")
-	if err != nil {
-		fmt.Println(err)
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	defer tempFile.Close()
-
 	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	tempFile.Write(fileBytes)
+	err = ioutil.WriteFile(path.Join(i.cf.WWWRoot, i.cf.ImageRepositoryPath, handler.Filename), fileBytes, 0755)
 
-	err = os.Chmod(tempFile.Name(), 0755)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
 
-func (i *ImageHandler) DeleteImageHandler(w http.ResponseWriter, r *http.Request) {
+func (i *ImageHandler) ImageDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Anyad")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -119,7 +112,15 @@ func (i *ImageHandler) ImageThresholdHandler(w http.ResponseWriter, r *http.Requ
 	imageName := vars["image"]
 	thresholdValue := vars["threshold"]
 	//var threshold algorithms.Threshold {}
-	fmt.Printf("Image: %s, threshold: %s", imageName, thresholdValue)
+	fmt.Printf("ImageThresholdHandler: %s, threshold: %s", imageName, thresholdValue)
+
+	thresholdValueI, err := strconv.Atoi(thresholdValue)
+
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	var response ImageDTO
 
@@ -131,7 +132,7 @@ func (i *ImageHandler) ImageThresholdHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	threshold := algorithms.Threshold{imageData, 127}
+	threshold := algorithms.Threshold{imageData, int(thresholdValueI)}
 
 	outputImageData := threshold.Execute()
 	outputImageName := i.ir.GenerateImageName() + ".png"
@@ -147,6 +148,44 @@ func (i *ImageHandler) ImageThresholdHandler(w http.ResponseWriter, r *http.Requ
 
 	response.Image.Name = outputImageName
 	response.Image.Path = outputImagePath
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.Write(jsonResponse)
+}
+
+func (i *ImageHandler) ImageHistogramHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	vars := mux.Vars(r)
+	imageName := vars["image"]
+	//var threshold algorithms.Threshold {}
+	fmt.Printf("ImageHistogramHandler: %s", imageName)
+
+	var response HistogramDTO
+
+	imageData, err := image_io.LoadRGBAImage(path.Join(i.cf.WWWRoot, i.cf.ImageRepositoryPath, imageName))
+
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	histogram := algorithms.Histogram{imageData}
+	min, max, values := histogram.Execute()
+
+	response.Histogram.Min = min
+	response.Histogram.Max = max
+	response.Histogram.Values = values[:]
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

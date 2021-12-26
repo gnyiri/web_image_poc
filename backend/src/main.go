@@ -23,7 +23,8 @@ func main() {
 	r.HandleFunc("/upload", ih.ImageUploadHandler)
 	r.HandleFunc("/images", ih.ImagesHandler).Methods("GET")
 	r.HandleFunc("/threshold/{image}/{threshold}", ih.ImageThresholdHandler).Methods("GET")
-	r.HandleFunc("/images/{image}", ih.DeleteImageHandler).Methods("DELETE")
+	r.HandleFunc("/histogram/{image}", ih.ImageHistogramHandler).Methods("GET")
+	r.HandleFunc("/images/{image}", ih.ImageDeleteHandler).Methods("DELETE")
 	// r.Use(mux.CORSMethodMiddleware(r))
 
 	c := cors.New(cors.Options{

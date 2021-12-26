@@ -1,0 +1,14 @@
+<div class="container" align="center">
+    <p>Delete image {{image?.name}}?</p>
+    <div class="form-group">
+        <button class="btn btn-primary mr-1" (click)="onDelete()">Delete</button>
+        <button class="btn btn-primary mr-1" (click)="onCancel()">Cancel</button>
+    </div>
+    <div class="container">
+        <div *ngIf="image" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+            <div>
+                <img src="{{image.full_path}}" alt="{{image.name}}">
+            </div>
+        </div>
+    </div>
+</div>

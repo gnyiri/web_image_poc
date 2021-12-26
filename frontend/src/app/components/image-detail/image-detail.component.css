@@ -4,3 +4,7 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+img.selected {
+  border: 5px solid rgb(68, 184, 78);
+}

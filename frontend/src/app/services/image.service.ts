@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { HistogramResponse } from '../interfaces/histogram';
 import { SingleImageResponse, MultiImageResponse } from '../interfaces/image'
 
 @Injectable({
@@ -15,9 +16,11 @@ export class ImageService {
 
   getImages(): Observable<MultiImageResponse> {
     return this.http.get<MultiImageResponse>(`${environment.backendUrl}/images`).pipe(map(response => {
-      response.images.forEach(image => {
-        image.full_path = environment.imageRepositoryUrl + '/' + image.name;
-      });
+      if (response.images) {
+        response.images.forEach(image => {
+          image.full_path = environment.imageRepositoryUrl + '/' + image.name;
+        });
+      }
 
       return response;
     }));
@@ -29,5 +32,9 @@ export class ImageService {
 
   deleteImage(image: string): Observable<JSON> {
     return this.http.delete<JSON>(`${environment.backendUrl}/images/${image}`);
+  }
+
+  histogram(image: string): Observable<HistogramResponse> {
+    return this.http.get<HistogramResponse>(`${environment.backendUrl}/histogram/${image}`);
   }
 }

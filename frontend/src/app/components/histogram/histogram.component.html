@@ -1,0 +1,9 @@
+<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+   <div *ngIf="image" class="container">
+      <img src="{{image.full_path}}" alt="{{image.full_path}}">
+      <p>{{image.name}}</p>
+   </div>
+   <google-chart #chart [title]="title" [type]="type" [data]="data" [options]="options" [width]="width"
+      [height]="height">
+   </google-chart>
+</div>
