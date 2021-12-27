@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	cf := config.NewConfig(8080, "/var/www/html", "repository")
+	cf := config.NewConfig(9001, "/var/www/html", "repository")
 	ir := image_repository.NewImageRepository(cf)
 	ih := api.NewImageHandler(cf, ir)
 
