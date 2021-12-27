@@ -14,6 +14,7 @@ import { ImageViewerComponent } from './components/image-viewer/image-viewer.com
 import { ImageThresholdComponent } from './components/image-threshold/image-threshold.component';
 import { HistogramComponent } from './components/histogram/histogram.component';
 import { ImageDeleteComponent } from './components/image-delete/image-delete.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ImageDeleteComponent } from './components/image-delete/image-delete.com
     ImageViewerComponent,
     ImageThresholdComponent,
     HistogramComponent,
-    ImageDeleteComponent
+    ImageDeleteComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
