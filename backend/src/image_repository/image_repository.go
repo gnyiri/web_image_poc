@@ -35,7 +35,7 @@ func (i *ImageRepository) GetImages() ([]ImageEntity, error) {
 				ImageEntity{
 					file.Name(),
 					path.Join(i.config.WWWRoot, i.config.ImageRepositoryPath, file.Name()),
-					int(file.ModTime().UnixMilli())})
+					int(file.ModTime().Second())})
 		}
 	}
 
