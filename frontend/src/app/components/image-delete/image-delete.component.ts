@@ -24,6 +24,7 @@ export class ImageDeleteComponent implements OnInit {
   onDelete(): void {
     if (this.image) {
       this.imageService.deleteImage(this.image?.name).subscribe(result => {
+        this.stateService.selectedImage = undefined;
         this.router.navigate(['images', {}]);
       });
     }

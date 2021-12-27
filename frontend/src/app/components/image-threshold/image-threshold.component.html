@@ -9,16 +9,16 @@
 
     <div *ngIf="iImage" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
         <div>
-            <img src="{{iImage.full_path}}" alt="{{iImage.name}}">
+            <img src="{{iImage.full_path}}" alt="{{iImage.name}}" class="img-fluid">
             <p>{{iImage.name}}</p>
         </div>
         <div *ngIf="oImage; else elseBlock">
-            <img src="{{oImage.full_path}}" alt="{{oImage.name}}">
+            <img src="{{oImage.full_path}}" alt="{{oImage.name}}" class="img-fluid">
             <p>{{oImage.name}}</p>
         </div>
         <ng-template #elseBlock>
             <div>
-                <img src="{{iImage.full_path}}" alt="{{iImage.name}}">
+                <img src="{{iImage.full_path}}" alt="{{iImage.name}}" class="img-fluid">
                 <p>{{iImage.name}}</p>
             </div>
         </ng-template>

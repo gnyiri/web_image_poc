@@ -29,8 +29,10 @@ export class ImageThresholdComponent implements OnInit {
   onThreshold(): void {
     console.log(`onThreshold called: ${this.iImage?.name} ${this.thresholdControl.value}`);
 
+    const thresholdValue = this.thresholdControl.value ? this.thresholdControl.value : 127;
+
     if (this.iImage) {
-      this.imageService.thresholdImage(this.iImage.name, this.thresholdControl.value).subscribe(response => {
+      this.imageService.thresholdImage(this.iImage.name, thresholdValue).subscribe(response => {
         console.log(response);
 
         this.oImage = response.image;
