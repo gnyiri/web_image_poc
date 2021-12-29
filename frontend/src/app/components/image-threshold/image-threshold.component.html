@@ -1,13 +1,16 @@
-<div class="container" align="center">
+<div *ngIf="iImage else noImage" class="container" align="center">
     <h4 class="text-center">Select threshold and start segmentation</h4>
     <div class="slidecontainer">
-        <input type="range" min="0" max="255" value="127" class="slider" id="myRange" [formControl]="thresholdControl">
+        <span class="font-weight-bold mr-2">{{min}}</span>
+        <input type="range" min="{{min}}" max="{{max}}" value="127" class="slider" id="myRange"
+            [formControl]="thresholdControl">
+        <span class="font-weight-bold mr-2">{{max}}</span>
     </div>
+    <label for="myRange">Threshold: {{thresholdControl.value}}</label>
     <div class="container">
         <button class="btn btn-danger" (click)="onThreshold()">Start thresholding</button>
     </div>
-
-    <div *ngIf="iImage" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
         <div>
             <img src="{{iImage.full_path}}" alt="{{iImage.name}}" class="img-fluid">
             <p>{{iImage.name}}</p>
@@ -24,3 +27,6 @@
         </ng-template>
     </div>
 </div>
+<ng-template #noImage>
+    <div class="container" align="center">No image selected</div>
+</ng-template>

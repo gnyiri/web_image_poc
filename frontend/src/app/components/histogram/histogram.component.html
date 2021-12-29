@@ -1,9 +1,13 @@
-<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-   <div *ngIf="image" class="container">
-      <img src="{{image.full_path}}" alt="{{image.full_path}}">
-      <p>{{image.name}}</p>
+<div *ngIf="image" class="container" align="center">
+   <div class="row justify-content-center">
+      <div class="col">
+         <img src="{{image.full_path}}" alt="{{image.full_path}}">
+         <p>{{image.name}}</p>
+      </div>
+      <div class="col">
+         <google-chart #chart [title]="title" [type]="type" [data]="data" [options]="options" [width]="width"
+            [height]="height">
+         </google-chart>
+      </div>
    </div>
-   <google-chart #chart [title]="title" [type]="type" [data]="data" [options]="options" [width]="width"
-      [height]="height">
-   </google-chart>
 </div>

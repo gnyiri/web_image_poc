@@ -14,30 +14,30 @@ export class ImageThresholdComponent implements OnInit {
   iImage: Image | undefined = undefined;
   oImage: Image | undefined = undefined;
   thresholdControl: FormControl = new FormControl();
+  min = 0;
+  max = 255;
+  threshold = 127;
 
   constructor(private imageService: ImageService,
-    private stateService: StateService) { }
+              private stateService: StateService) { }
 
   ngOnInit(): void {
     this.iImage = this.stateService.selectedImage;
-  }
-
-  onSliderValueChange(event: any): void {
-    console.log(event.value);
+    this.thresholdControl.setValue(this.threshold);
   }
 
   onThreshold(): void {
-    console.log(`onThreshold called: ${this.iImage?.name} ${this.thresholdControl.value}`);
+    console.log(`onThreshold called: ${this.iImage?.name} ${this.threshold}`);
 
-    const thresholdValue = this.thresholdControl.value ? this.thresholdControl.value : 127;
+    this.threshold = this.thresholdControl.value ? this.thresholdControl.value : 127;
 
     if (this.iImage) {
-      this.imageService.thresholdImage(this.iImage.name, thresholdValue).subscribe(response => {
+      this.imageService.thresholdImage(this.iImage.name, this.threshold).subscribe(response => {
         console.log(response);
 
         this.oImage = response.image;
         this.oImage.full_path = environment.imageRepositoryUrl + '/' + response.image.name;
       });
-    }
+    } 
   }
 }

@@ -18,15 +18,15 @@ export class HistogramComponent implements OnInit {
   options = {
     legend: 'none'
   };
-  width = 850;
+  width = 600;
   height = 400;
   image: Image | undefined = undefined;
-  min: number = 0;
-  max: number = 255;
+  min = 0;
+  max = 255;
   values: [] = [];
 
   constructor(private imageService: ImageService,
-    private stateService: StateService) { }
+              private stateService: StateService) { }
 
   ngOnInit(): void {
     this.image = this.stateService.selectedImage;
@@ -36,17 +36,17 @@ export class HistogramComponent implements OnInit {
         console.log(result);
         this.min = result.histogram.min;
         this.max = result.histogram.max;
-       
-        var histogram: Row[] = [];
-        var i = 0;
+
+        const histogram: Row[] = [];
+        let i = 0;
         result.histogram.values.forEach(v => {
-          var row: Array<string | number> = [i, v];
+          const row: Array<string | number> = [i, v];
           histogram.push(row);
-          i = i +1;
+          i = i + 1;
         });
 
         this.data = histogram;
-      })
+      });
     }
   }
 
